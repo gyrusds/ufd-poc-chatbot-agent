@@ -127,7 +127,8 @@ class ChatReadRetrieveReadVisionApproach(ChatApproach):
             if vector_fields == "textEmbeddingOnly" or vector_fields == "textAndImageEmbeddings":
                 vectors.append(await self.compute_text_embedding(query_text))
             if vector_fields == "imageEmbeddingOnly" or vector_fields == "textAndImageEmbeddings":
-                vectors.append(await self.compute_image_embedding(query_text))
+                # vectors.append(await self.compute_image_embedding(query_text))
+                vectors.append(await self.compute_text_embedding(query_text))
 
         results = await self.search(
             top,
@@ -148,11 +149,11 @@ class ChatReadRetrieveReadVisionApproach(ChatApproach):
         image_sources = []
         if send_text_to_gptvision:
             text_sources = self.get_sources_content(results, use_semantic_captions, use_image_citation=True)
-        if send_images_to_gptvision:
-            for result in results:
-                url = await fetch_image(self.blob_container_client, result)
-                if url:
-                    image_sources.append(url)
+        # if send_images_to_gptvision:
+        #     for result in results:
+        #         url = await fetch_image(self.blob_container_client, result)
+        #         if url:
+        #             image_sources.append(url)
 
         messages = self.prompt_manager.render_prompt(
             self.answer_prompt,
